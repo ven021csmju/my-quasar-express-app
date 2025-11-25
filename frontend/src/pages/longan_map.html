@@ -12,22 +12,26 @@
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+oVAXl6b2o3y6mMLQQ3WFS+Xc8wrw6pYfL2J5Vn+I="
     crossorigin=""
   />
 
   <!-- Leaflet JS -->
   <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-pX3U6v/UuG+P3sLkO8pGvI5JxM1yFf/gk5hXc0M0Vhg="
     crossorigin=""
   ></script>
-  
+
   <style>
     #map {
       height: 600px;
       width: 100%;
       border-radius: 12px;
+    }
+    .leaflet-popup-content img {
+      width: 150px;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -39,28 +43,32 @@
 
   <script>
     // สร้างแผนที่
-    const map = L.map('map').setView([13.7, 100.5], 6); // พิกัดไทยกว้าง
+    const map = L.map('map').setView([13.7, 100.5], 6);
 
     // ใส่ Tile Layer จาก OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // กำหนดหลายตำแหน่ง (ตัวอย่างตำแหน่งในไทย)
+    // กำหนดหลายตำแหน่ง พร้อมรูปดอกลำไย
     const locations = [
-      { name: "Bangkok", coords: [13.7563, 100.5018] },
-      { name: "Chiang Mai", coords: [18.7883, 98.9853] },
-      { name: "Phuket", coords: [7.8804, 98.3923] },
-      { name: "Surat Thani", coords: [9.1407, 99.3334] },
-      { name: "Longan Orchard", coords: [17.4440, 101.7890] } // ตัวอย่าง longan
+          { 
+        name: "นายกิตติคุณ กิจวิบูลย์สิน",
+        code : "6604101307", 
+        coords: [19.3000, 97.9667],
+        img: "/images/Batman.jpg"
+      }
     ];
 
-    // วน loop สร้าง Marker
+    // วน loop สร้าง Marker + Popup พร้อมรูป
     locations.forEach(loc => {
       L.marker(loc.coords)
         .addTo(map)
-        .bindPopup(`<b>${loc.name}</b>`)
-        .openPopup();
+        .bindPopup(`
+          <b>${loc.name}</b>
+          <br>${loc.code}</br>
+          <img src="${loc.img}" alt="${loc.name} Flower">
+        `);
     });
   </script>
 
