@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longan Map</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin=""
+  />
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    crossorigin=""
+  ></script>
+
+  <style>
+    #map {
+      height: 600px;
+      width: 100%;
+      border-radius: 12px;
+    }
+    .leaflet-popup-content img {
+      width: 150px;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center py-10">
+
+  <h1 class="text-3xl font-bold text-green-700 mb-6">Longan Map – Multiple Locations</h1>
+
+  <div id="map" class="shadow-lg"></div>
+
+  <script>
+    // สร้างแผนที่
+    const map = L.map('map').setView([13.7, 100.5], 6);
+
+    // ใส่ Tile Layer จาก OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // กำหนดหลายตำแหน่ง พร้อมรูปดอกลำไย
+    const locations = [
+      { 
+        name: "นายกิตติคุณ กิจวิบูลย์สิน", 
+        coords: [13.7563, 100.5018],
+        img: "/images/Batman.jpg"
+      },
+      { 
+        name: "Chiang Mai", 
+        coords: [18.7883, 98.9853],
+        img: "/images/Batman.jpg"
+      },
+      { 
+        name: "Phuket", 
+        coords: [7.8804, 98.3923],
+        img: "/images/Batman.jpg"
+      },
+      { 
+        name: "Surat Thani", 
+        coords: [9.1407, 99.3334],
+        img: "/images/Batman.jpg"
+      },
+      { 
+        name: "Longan Orchard", 
+        coords: [17.4440, 101.7890],
+        img: "/images/longan_flower.jpg"
+      }
+    ];
+
+    // วน loop สร้าง Marker + Popup พร้อมรูป
+    locations.forEach(loc => {
+      L.marker(loc.coords)
+        .addTo(map)
+        .bindPopup(`
+          <b>${loc.name}</b>
+          <img src="${loc.img}" alt="${loc.name} Flower">
+        `);
+    });
+  </script>
+
+</body>
+</html>
