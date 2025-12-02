@@ -1,69 +1,109 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
-    <q-bar>
-      <q-btn dense flat :icon="fabApple" />
-      <div class="text-weight-bold">
-        App
-      </div>
-      <div class="cursor-pointer gt-md">File</div>
-      <div class="cursor-pointer gt-md">Edit</div>
-      <div class="cursor-pointer gt-md">View</div>
-      <div class="cursor-pointer gt-md">Window</div>
-      <div class="cursor-pointer gt-md">Help</div>
-      <q-space />
-      <q-btn dense flat icon="airplay" class="gt-xs" />
-      <q-btn dense flat icon="battery_charging_full" />
-      <q-btn dense flat icon="wifi" />
-      <div>9:41</div>
-      <q-btn dense flat icon="search" />
-      <q-btn dense flat icon="list" />
-    </q-bar>
+  <q-page padding>
+    <div class="text-h4 q-mb-md">
+      Advanced Full-Stack Demo (Quasar + Express)
+    </div>
 
-    <q-bar class="bg-black text-white">
-      <q-btn dense flat :icon="fabApple" />
-      <div class="text-weight-bold">
-        App
-      </div>
-      <div class="cursor-pointer gt-md">File</div>
-      <div class="cursor-pointer gt-md">Edit</div>
-      <div class="cursor-pointer gt-md">View</div>
-      <div class="cursor-pointer gt-md">Window</div>
-      <div class="cursor-pointer gt-md">Help</div>
-      <q-space />
-      <q-btn dense flat icon="airplay" class="gt-xs" />
-      <q-btn dense flat icon="battery_charging_full" />
-      <q-btn dense flat icon="wifi" />
-      <div>9:41</div>
-      <q-btn dense flat icon="search" />
-      <q-btn dense flat icon="list" />
-    </q-bar>
+    <!-- Git Workflow (จากตัวอย่างก่อน) -->
+    <q-card class="q-mb-md">
+      <q-card-section>
+        <div class="text-h6">Git Workflow</div>
+        <q-list bordered separator class="q-mt-sm">
+          <q-item v-for="(step, index) in gitSteps" :key="index">
+            <q-item-section avatar>
+              <q-badge>{{ index + 1 }}</q-badge>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ step.git.title }}</q-item-label>
+              <q-item-label caption>{{ step.git.detail }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+    </q-card>
 
-    <q-bar>
-      <q-btn dense flat round icon="lens" size="8.5px" color="red" />
-      <q-btn dense flat round icon="lens" size="8.5px" color="yellow" />
-      <q-btn dense flat round icon="lens" size="8.5px" color="green" />
-      <div class="col text-center text-weight-bold">
-        My-App
-      </div>
-    </q-bar>
+    <!-- Docker Concepts (จากตัวอย่างก่อน) -->
+    <q-card class="q-mb-md">
+      <q-card-section>
+        <div class="text-h6">Docker Concepts</div>
+        <q-list bordered separator class="q-mt-sm">
+          <q-item v-for="(item, index) in dockerItems" :key="index">
+            <q-item-section>
+              <q-item-label>{{ item.docker.title }}</q-item-label>
+              <q-item-label caption>{{ item.docker.detail }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+    </q-card>
 
-    <q-bar dark class="bg-primary text-white">
-      <q-btn dense flat round icon="lens" size="8.5px" color="red" />
-      <q-btn dense flat round icon="lens" size="8.5px" color="yellow" />
-      <q-btn dense flat round icon="lens" size="8.5px" color="green" />
-      <div class="col text-center text-weight-bold">
-        My-App
-      </div>
-    </q-bar>
-  </div>
+    <!-- New: API Data from Backend -->
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">Data from Backend API</div>
+        <q-spinner v-if="loading" color="primary" size="2em" />
+        <q-list v-else bordered separator class="q-mt-sm">
+          <q-item>
+            <q-item-section>
+              <q-item-label>Advanced Git</q-item-label>
+              <q-item-label caption>{{ apiData.git.detail }}</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <q-item-label>Advanced Docker</q-item-label>
+              <q-item-label caption>{{ apiData.docker.detail }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+        <q-btn v-if="!loading" color="primary" @click="fetchData"
+          >Refresh Data</q-btn
+        >
+      </q-card-section>
+    </q-card>
+  </q-page>
 </template>
 
-<script>
-import { fabApple } from '@quasar/extras/fontawesome-v6'
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
-export default {
-  setup () {
-    return { fabApple }
+// จากตัวอย่างก่อน
+const gitSteps = [
+  {
+    git: {
+      title: "Advanced Git Workflow",
+      detail:
+        "ใช้ branch protection บน GitHub, code review ใน PR, และ squash merge เพื่อ history สะอาด",
+    },
+  },
+];
+const dockerItems = [
+  {
+    docker: {
+      title: "Advanced Docker",
+      detail:
+        "ใช้ multi-stage build, healthcheck ใน Dockerfile, และ orchestration ด้วย Compose/Swarm",
+    },
+  },
+];
+
+const apiData = ref({ git: {}, docker: {} });
+const loading = ref(true);
+
+const fetchData = async () => {
+  loading.value = true;
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/demo"
+    );
+    apiData.value = response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+  } finally {
+    loading.value = false;
   }
-}
+};
+
+onMounted(fetchData);
 </script>
