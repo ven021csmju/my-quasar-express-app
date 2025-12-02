@@ -14,8 +14,8 @@
               <q-badge>{{ index + 1 }}</q-badge>
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ step.title }}</q-item-label>
-              <q-item-label caption>{{ step.detail }}</q-item-label>
+              <q-item-label>{{ step.git.title }}</q-item-label>
+              <q-item-label caption>{{ step.git.detail }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -29,8 +29,8 @@
         <q-list bordered separator class="q-mt-sm">
           <q-item v-for="(item, index) in dockerItems" :key="index">
             <q-item-section>
-              <q-item-label>{{ item.title }}</q-item-label>
-              <q-item-label caption>{{ item.detail }}</q-item-label>
+              <q-item-label>{{ item.docker.title }}</q-item-label>
+              <q-item-label caption>{{ item.docker.detail }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -46,15 +46,13 @@
           <q-item>
             <q-item-section>
               <q-item-label>Advanced Git</q-item-label>
-              <q-item-label caption>{{ gitSteps.git.detail }}</q-item-label>
+              <q-item-label caption>{{ apiData.git.detail }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
             <q-item-section>
               <q-item-label>Advanced Docker</q-item-label>
-              <q-item-label caption>{{
-                dockerItems.docker.detail
-              }}</q-item-label>
+              <q-item-label caption>{{ apiData.docker.detail }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
