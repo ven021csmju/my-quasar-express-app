@@ -6,7 +6,7 @@ require('dotenv').config();
 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 
 // Middleware
@@ -28,15 +28,9 @@ app.get('/api/demo', (req, res) => {
 
 
     res.json({
-        git: {
-            title: 'Advanced Git Workflow',
-            detail: 'ใช้ branch protection บน GitHub, code review ใน PR, และ squash merge เพื่อ history สะอาด'
-        },
-        docker: {
-            title: 'Advanced Docker',
-            detail: 'ใช้ multi-stage build, healthcheck ใน Dockerfile, และ orchestration ด้วย Compose/Swarm'
-        }
-    });
+        name: 'Kittikun Kijwiboonsin',
+        student_id: '6604101307',   
+     });
 });
 
 app.get("/", (req, res) => {
