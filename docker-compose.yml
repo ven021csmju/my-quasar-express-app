@@ -1,0 +1,10 @@
+services:
+  backend:
+    image: ktk11/kittikun_307:backend
+    ports:
+      - "4000:4000"
+
+  frontend:
+    image: ktk11/kittikun_307:frontend
+    ports:
+      - "8080:80"
