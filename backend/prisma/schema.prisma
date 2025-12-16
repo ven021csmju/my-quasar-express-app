@@ -10,9 +10,10 @@ datasource db {
 
 // Add Task model used by the API routes
 model Task {
-  id          String   @id @default(uuid())
+  id          Int      @id @default(autoincrement())
   title       String
   description String?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
+
+
