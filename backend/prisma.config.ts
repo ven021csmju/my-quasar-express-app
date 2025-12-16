@@ -1,8 +1,14 @@
-import { defineConfig } from '@prisma/config';
-import 'dotenv/config';
+// prisma.config.ts
+import 'dotenv/config'
+import { defineConfig, env } from 'prisma/config'
 
 export default defineConfig({
-  datasource: {
-    url: process.env.DATABASE_URL!, // ✅ Prisma จะดึงจาก .env
+  schema: 'prisma/schema.prisma',
+  migrations: {
+    path: 'prisma/migrations',
   },
-});
+  datasource: {
+    url: env('DATABASE_URL'),
+  },
+})
+        

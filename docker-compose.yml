@@ -1,10 +1,35 @@
+version: '3.8'
+
 services:
   backend:
-    image: ktk11/kittikun_307:backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: my-express-backend
     ports:
       - "4000:4000"
+    volumes:
+      - ./backend/logs:/app/logs
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres.eiuiueqnbczicxqfwpiu:venv0217@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres}
+      - PORT=4000
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4000/api/demo"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   frontend:
-    image: ktk11/kittikun_307:frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: my-quasar-frontend
     ports:
       - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - VITE_API_URL=http://host.docker.internal:4000

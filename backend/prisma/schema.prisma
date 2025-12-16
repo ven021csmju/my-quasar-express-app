@@ -5,5 +5,15 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-
 }
+
+
+// Add Task model used by the API routes
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+
